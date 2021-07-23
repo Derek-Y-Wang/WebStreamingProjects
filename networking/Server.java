@@ -88,7 +88,7 @@ public class Server extends JFrame{
             try{
                 message = (String) input.readObject();
             }catch(ClassNotFoundException classNotFoundException){
-                shoMessage("\n Uknown Object Sent!");
+                showMessage("\n Uknown Object Sent!");
             }
         }while(!message.equals("CLIENT - END"));
     }
@@ -105,5 +105,45 @@ public class Server extends JFrame{
         }catch(IOException ioException){
             ioException.printStackTrace();
         }
+    }
+
+
+    // send a message to client
+    private void sendMessage(String message){
+        try{
+            output.writeObject("SERVER -" + message);
+            output.flush();
+            showMessage("\nSERVER - " + message);
+        }catch(IOException ioException){
+            chatWindow.append("\n ERROR: CANNOT SEND MESSAGE!");
+        }
+    }
+
+    //updates chatWindow
+    private void showMessage(final String text){
+        SwingUtilities.invokeLater(
+            // create a thread
+            new Runnable(){
+            
+                @Override
+                public void run() {
+                    chatWindow.append(text);                    
+                }
+            }
+        );        
+    }
+
+    // sets text field to type messages
+    private void ableToType(final boolean tof){
+        SwingUtilities.invokeLater(
+            // create a thread
+            new Runnable(){
+            
+                @Override
+                public void run() {
+                    userText.setEditable(tof);               
+                }
+            }
+        );            
     }
 }
