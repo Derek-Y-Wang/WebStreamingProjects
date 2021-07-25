@@ -41,7 +41,9 @@ public class Client extends JFrame{
     //connect to server
     public void startRunning(){
         try{
-
+            connectToServer();
+            setupStreams();
+            whileChatting();
         }catch(EOFException eofException){
             showMessage("\n Client terminated connection");
 
