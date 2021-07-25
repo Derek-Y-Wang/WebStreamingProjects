@@ -3,6 +3,7 @@ import java.net.*;
 import java.awt.*;
 import java.awt.event.*;
 
+import javax.print.DocFlavor.INPUT_STREAM;
 import javax.swing.*;
 
 
@@ -56,4 +57,31 @@ public class Client extends JFrame{
         }
     }
 
+    // connect to server
+    private void connectToServer() throws IOException{
+        showMessage("Attempting connection... \n");
+        connection = new Socket(InetAddress.getByName(serverIP), 6789);
+        showMessage("Connected to: " + connection.getInetAddress().getHostName());
+    }
+
+    //setup streams to send and receive messages
+    private void setupStreams() throws IOException{
+        output = new ObjectOutputStream(connection.getOutputStream());
+        output.flush();
+        input = new ObjectInputStream(connection.getInputStream();
+        showMessage("\n Streams are setup! \n");
+    }
+
+    // while chatting with server
+    private void whileChatting() throws IOException{
+        ableToType(true);
+        do{
+            try{
+                message = (String) input.readObject();
+                showMessage("\n" + message);
+            }catch(ClassNotFoundException classNotFoundException){
+                showMessage("\n Unknown Object Type");
+            }
+        }while(!message.equals("SERVER - END"));
+    }
 }
