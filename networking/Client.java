@@ -111,7 +111,7 @@ public class Client extends JFrame{
     }
 
     //change/update chatWindow
-    private void showMessages(final String m){
+    private void showMessage(final String m){
         SwingUtilities.invokeLater(
             new Runnable(){
                 public void run(){
