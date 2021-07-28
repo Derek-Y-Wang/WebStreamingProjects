@@ -53,7 +53,7 @@ public class Client extends JFrame{
         }catch(IOException ioException){
             ioException.printStackTrace();
         }finally{
-            classAll();
+            closeAll();
         }
     }
 
@@ -84,4 +84,52 @@ public class Client extends JFrame{
             }
         }while(!message.equals("SERVER - END"));
     }
+
+    // close the streams and socket
+    private void closeAll(){
+        showMessage("\n Closing streams...");
+        ableToType(false);
+        try{
+            output.close();
+            input.close();
+            connection.close();
+        }catch(IOException ioException){
+            ioException.printStackTrace();
+        }
+
+    }
+
+    // send messages to server
+    private void sendMessage(String message){
+        try{
+            output.writeObject("CLIENT - " + message);
+            output.flush();
+            showMessage("\n CLIENT  - " + message);
+        }catch(IOException ioException){
+            chatWindow.append("\n Something went wrong");
+        }
+    }
+
+    //change/update chatWindow
+    private void showMessages(final String m){
+        SwingUtilities.invokeLater(
+            new Runnable(){
+                public void run(){
+                    chatWindow.append(m);
+                }
+            }
+        );
+    }
+
+    //gives user permission to type into the text box
+    private void ableToType(final boolean tof){
+        SwingUtilities.invokeLater(
+            new Runnable(){
+                public void run(){
+                    userText.setEditable(tof);
+                }
+            }
+        );
+    }
+
 }
